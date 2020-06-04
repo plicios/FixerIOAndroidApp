@@ -4,7 +4,8 @@ import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
-import pl.pgorny.fixerioapidisplay.data.dto.FixerIoApiResponse
+import pl.pgorny.fixerioapidisplay.data.dto.FixerIoApiFailureResponse
+import pl.pgorny.fixerioapidisplay.data.dto.FixerIoApiSuccessResponse
 import pl.pgorny.fixerioapidisplay.data.model.DateRow
 import pl.pgorny.fixerioapidisplay.data.model.RateRow
 import pl.pgorny.fixerioapidisplay.data.model.Row
@@ -12,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 
-class Repository(val apiAccessKey: String) : PageKeyedDataSource<DateTime, Row>() {
+class Repository(private val apiAccessKey: String) : PageKeyedDataSource<DateTime, Row>() {
     private val fixerIoApi by lazy {
         Retrofit.Builder()
             .baseUrl("http://data.fixer.io/api/")
@@ -21,26 +22,40 @@ class Repository(val apiAccessKey: String) : PageKeyedDataSource<DateTime, Row>(
             .create(FixerIoApi::class.java)
     }
 
-    private fun handleResponse(response: FixerIoApiResponse) : List<Row> {
-        return mutableListOf<Row>(DateRow()).also { list ->
+    private fun handleSuccessResponse(response: FixerIoApiSuccessResponse) : List<Row> {
+        return mutableListOf<Row>(DateRow(response.date)).also { list ->
             list.addAll(response.rates.map {
                 RateRow(it.key, it.value)
             })
         }
     }
 
-    fun formatDate(date: DateTime) : String = date.toString("yyyy-MM-dd")
-    fun getNextKey(date: DateTime) : DateTime = date.minusDays(1)
+    private fun getNextKey(date: DateTime) : DateTime = date.minusDays(1)
 
-    private suspend fun makeApiCall(date: DateTime) : Pair<List<Row>, DateTime?> {
+    private suspend fun makeApiCall(date: DateTime, pageSize: Int) : Pair<List<Row>, DateTime?> {
+        val result = mutableListOf<Row>()
+        var nextKey: DateTime? = date
         try {
-            val response = fixerIoApi.getHistoricalDataForDate(formatDate(date), apiAccessKey)
-            return if(response.isSuccessful){
-                val exercisesList = response.body()?.let { handleResponse(it) } ?: listOf()
-                val nextKey = getNextKey(date)
-                Pair(exercisesList, nextKey)
-            } else {
-                throw Exception("Api call was not successful: ${response.errorBody()}")
+            for (i in 0 until pageSize) {
+                nextKey?.let {
+                    val response = fixerIoApi.getHistoricalDataForDate(it.toFixerIoDateQueryFormat(), apiAccessKey)
+                    if(response.isSuccessful){
+                        val fixerIoResponse = response.body()?.getResponse() ?: throw Exception("Api returned empty body")
+                        when(fixerIoResponse){
+                            is FixerIoApiSuccessResponse -> {
+                                val rows = handleSuccessResponse(fixerIoResponse)
+                                nextKey = getNextKey(date)
+                                result.addAll(rows)
+                            }
+                            is FixerIoApiFailureResponse -> {
+                                throw Exception(fixerIoResponse.error.info)
+                            }
+                            else -> throw IllegalStateException("Response must be success or failure")
+                        }
+                    } else {
+                        throw Exception("Api call was not successful: ${response.errorBody()}")
+                    }
+                } ?: throw Exception("Cannot query Api with null date")
             }
         } catch (e: Exception) {
             Timber.e(e)
@@ -49,8 +64,9 @@ class Repository(val apiAccessKey: String) : PageKeyedDataSource<DateTime, Row>(
 //                    "Api call was not successful"
 //                )
 //            )
-            return Pair(listOf(), null)
+            nextKey = null
         }
+        return Pair(result, nextKey)
     }
 
     override fun loadInitial(
@@ -58,14 +74,14 @@ class Repository(val apiAccessKey: String) : PageKeyedDataSource<DateTime, Row>(
         callback: LoadInitialCallback<DateTime, Row>
     ) {
         GlobalScope.launch {
-            val listWithNextPageKey = makeApiCall(DateTime())
+            val listWithNextPageKey = makeApiCall(DateTime(), params.requestedLoadSize)
             callback.onResult(listWithNextPageKey.first, null, listWithNextPageKey.second)
         }
     }
 
     override fun loadAfter(params: LoadParams<DateTime>, callback: LoadCallback<DateTime, Row>) {
         GlobalScope.launch {
-            val listWithNextPageKey = makeApiCall(params.key)
+            val listWithNextPageKey = makeApiCall(params.key, params.requestedLoadSize)
             callback.onResult(listWithNextPageKey.first, listWithNextPageKey.second)
         }
     }

@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -35,6 +39,9 @@ dependencies {
 
     //AppCompat
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
+
+    // Lifecycle (ViewModel & LiveData)
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
     //Design
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"

@@ -1,4 +1,3 @@
 package pl.pgorny.fixerioapidisplay.data.model
 
-class DateRow : Row() {
-}
+class DateRow(val date: String) : Row()
