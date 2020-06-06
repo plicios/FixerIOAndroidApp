@@ -4,14 +4,15 @@ import android.app.Application
 import timber.log.Timber
 
 class FixerIoApplication : Application() {
+    //TODO
+    //Pass date to RateFragment
+    //remove back arrow from list fragment
+    //
+
     override fun onCreate() {
         super.onCreate()
         if(BuildConfig.DEBUG){
             Timber.plant(Timber.DebugTree())
         }
-    }
-
-    companion object {
-        const val apiBaseUrl = "https://wger.de/api/v2/"
     }
 }

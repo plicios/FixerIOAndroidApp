@@ -7,9 +7,13 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-abstract class FixerIoApi {
+interface FixerIoApi {
     @GET("{date}")
-    abstract suspend fun getHistoricalDataForDate(@Path("date") date: String, @Query("access_key") accessKey: String) : Response<FixerIoApiResponse>
+    suspend fun getHistoricalDataForDate(
+        @Path("date") date: String,
+        @Query("access_key") accessKey: String,
+        @Query("symbols") symbols: String = "USD,AUD,CAD,PLN,MXN,EUR,RUB"
+    ) : Response<FixerIoApiResponse>
 }
 
-fun DateTime.toFixerIoDateQueryFormat() = this.toString("yyyy-MM-dd")
+fun DateTime.toFixerIoDateQueryFormat(): String = this.toString("yyyy-MM-dd")

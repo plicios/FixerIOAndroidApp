@@ -1,3 +1,7 @@
 package pl.pgorny.fixerioapidisplay.data.model
 
-class RateRow(val currencyCode: String, val rate: Double) : Row()
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class RateRow(val currencyCode: String, val rate: Double) : Row(), Parcelable

@@ -2,4 +2,11 @@
     <string name="app_name">FixerIOApiDisplay</string>
     <string name="api_access_key">73ce3fa9adc4c3a97ac75f6bce0aaa5a</string>
     <string name="date_label">Date:</string>
+
+    <string name="error_dialog_title">Error</string>
+    <string name="error_dialog_button_title">OK</string>
+
+    <string name="next_page_loading">Loading next page. Please wait…</string>
+    <string name="rate_label">Rate:</string>
+    <string name="currency_code_label">Currency code:</string>
 </resources>

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -23,6 +24,10 @@ android {
         }
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     buildFeatures {
         dataBinding = true
     }
@@ -31,21 +36,22 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
     implementation "android.arch.paging:runtime:$paging_version"
 
     //Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
 
     //AppCompat
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
 
-    // Lifecycle (ViewModel & LiveData)
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
-
     //Design
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "com.google.android.material:material:$materialDesignVersion"
+
+    // Lifecycle (ViewModel & LiveData)
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -56,4 +62,10 @@ dependencies {
 
     //JodaTime
     implementation 'joda-time:joda-time:2.10.6'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 }

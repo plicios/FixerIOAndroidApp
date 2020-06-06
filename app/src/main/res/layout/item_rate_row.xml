@@ -13,7 +13,7 @@
         android:onClick="@{view -> viewModel.openDetails()}"
         android:padding="10dp">
         <TextView
-            android:id="@+id/item_exercise_name_label"
+            android:id="@+id/item_rate_currency_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.currencyCode}"
@@ -22,13 +22,13 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="AUD"/>
         <TextView
-            android:id="@+id/item_exercise_name"
+            android:id="@+id/item_rate_rate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.rate}"
             android:layout_marginStart="10dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/item_exercise_name_label"
-            app:layout_constraintStart_toEndOf="@id/item_exercise_name_label"
+            app:layout_constraintBaseline_toBaselineOf="@+id/item_rate_currency_code"
+            app:layout_constraintStart_toEndOf="@id/item_rate_currency_code"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="0.3682" />
     </androidx.constraintlayout.widget.ConstraintLayout>

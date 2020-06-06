@@ -3,6 +3,7 @@ package pl.pgorny.fixerioapidisplay.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -14,15 +15,17 @@ import pl.pgorny.fixerioapidisplay.databinding.ItemDateRowBinding
 import pl.pgorny.fixerioapidisplay.databinding.ItemRateRowBinding
 import pl.pgorny.fixerioapidisplay.ui.viewModel.DateRowViewModel
 import pl.pgorny.fixerioapidisplay.ui.viewModel.RateRowViewModel
+import pl.pgorny.fixerioapidisplay.util.Event
+import pl.pgorny.fixerioapidisplay.util.SingleLiveEvent
+import timber.log.Timber
 
-class RowAdapter() : PagedListAdapter<Row, RowAdapter.RowViewHolder>(Row.diffUtilCallback) {
+class RowAdapter(private val eventLiveData: SingleLiveEvent<Event>) : PagedListAdapter<Row, RowAdapter.RowViewHolder>(Row.diffUtilCallback) {
 
     enum class ViewType(val value: Int){
         Rate(1),
         Date(0)
     }
-//  private val lifecycleOwner: LifecycleOwner
-//    , private val eventLiveData: SingleLiveEvent<Event>
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         when (viewType){
             ViewType.Date.value -> DateRowViewHolder(DataBindingUtil.inflate(
@@ -39,9 +42,12 @@ class RowAdapter() : PagedListAdapter<Row, RowAdapter.RowViewHolder>(Row.diffUti
     override fun onBindViewHolder(holder: RowViewHolder, position: Int) {
         when(holder){
             is RateRowViewHolder ->
-                holder.binding.viewModel = RateRowViewModel(getItem(position) as RateRow)
+                holder.binding.viewModel = RateRowViewModel(getItem(position) as RateRow).also {
+                    it.eventLiveData = eventLiveData
+                }
             is DateRowViewHolder ->
                 holder.binding.viewModel = DateRowViewModel(getItem(position) as DateRow)
+            else -> throw IllegalStateException("Unsupported viewHolder type")
         }
     }
 
