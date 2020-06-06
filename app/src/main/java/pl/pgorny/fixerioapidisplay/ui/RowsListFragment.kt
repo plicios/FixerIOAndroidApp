@@ -22,10 +22,6 @@ class RowsListFragment : Fragment() {
     private val eventLiveData =
         SingleLiveEvent<Event>()
 
-    companion object {
-        fun newInstance() = RowsListFragment()
-    }
-
     private val viewModel by viewModels<RowsListViewModel>(factoryProducer = {
         RowsListViewModel.Factory(
             getString(R.string.api_access_key),

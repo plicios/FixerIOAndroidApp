@@ -11,6 +11,7 @@ import pl.pgorny.fixerioapidisplay.util.SingleLiveEvent
 class RateRowViewModel(private val rateRow: RateRow) : ViewModel() {
     var eventLiveData: SingleLiveEvent<Event>? = null
 
+    val date = MutableLiveData(rateRow.date)
     val currencyCode = MutableLiveData(rateRow.currencyCode)
     val rate = MutableLiveData(rateRow.rate.toString())
 

@@ -4,11 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="rateViewModel"
+            name="viewModel"
             type="pl.pgorny.fixerioapidisplay.ui.viewModel.RateRowViewModel" />
-        <variable
-            name="dateViewModel"
-            type="pl.pgorny.fixerioapidisplay.ui.viewModel.DateRowViewModel" />
         <import type="android.view.View" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +24,7 @@
             android:id="@+id/rate_fragment_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{dateViewModel.date}"
+            android:text="@{viewModel.date}"
             android:layout_marginStart="10dp"
             app:layout_constraintBaseline_toBaselineOf="@+id/rate_fragment_date_label"
             app:layout_constraintStart_toEndOf="@id/rate_fragment_date_label"
@@ -45,7 +42,7 @@
             android:id="@+id/rate_fragment_currency_code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{rateViewModel.currencyCode}"
+            android:text="@{viewModel.currencyCode}"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             app:layout_constraintBaseline_toBaselineOf="@+id/rate_fragment_currency_code_label"
@@ -66,7 +63,7 @@
             android:id="@+id/rate_fragment_rate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{rateViewModel.rate}"
+            android:text="@{viewModel.rate}"
             android:layout_marginStart="10dp"
             app:layout_constraintBaseline_toBaselineOf="@+id/rate_fragment_rate_label"
             app:layout_constraintStart_toEndOf="@id/rate_fragment_rate_label"

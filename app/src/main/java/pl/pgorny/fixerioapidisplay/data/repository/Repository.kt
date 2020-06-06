@@ -32,7 +32,7 @@ class Repository(private val apiAccessKey: String, private val eventLiveData: Si
     private fun handleSuccessResponse(response: FixerIoApiSuccessResponse) : List<Row> {
         return mutableListOf<Row>(DateRow(response.date)).also { list ->
             list.addAll(response.rates.map {
-                RateRow(it.key, it.value)
+                RateRow(response.date, it.key, it.value)
             })
         }
     }
@@ -102,26 +102,20 @@ class Repository(private val apiAccessKey: String, private val eventLiveData: Si
         params: LoadInitialParams<DateTime>,
         callback: LoadInitialCallback<DateTime, Row>
     ) {
-        Timber.e("Load initial")
         GlobalScope.launch {
             val listWithNextPageKey = makeApiCall(DateTime(), params.requestedLoadSize)
-            Timber.e("Load initial: ${listWithNextPageKey.first.size}")
-            Timber.e("Load initial-last element: ${listWithNextPageKey.first.lastOrNull()}")
             callback.onResult(listWithNextPageKey.first, null, listWithNextPageKey.second)
         }
     }
 
     override fun loadAfter(params: LoadParams<DateTime>, callback: LoadCallback<DateTime, Row>) {
-        Timber.e("Load after")
         GlobalScope.launch {
             val listWithNextPageKey = makeApiCall(params.key, params.requestedLoadSize)
-            Timber.e("Load after: ${listWithNextPageKey.first.size}")
             callback.onResult(listWithNextPageKey.first, listWithNextPageKey.second)
         }
     }
 
     override fun loadBefore(params: LoadParams<DateTime>, callback: LoadCallback<DateTime, Row>) {
-        Timber.e("Load before")
     }
 
     class Factory(

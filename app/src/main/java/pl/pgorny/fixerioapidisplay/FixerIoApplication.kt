@@ -5,9 +5,7 @@ import timber.log.Timber
 
 class FixerIoApplication : Application() {
     //TODO
-    //Pass date to RateFragment
     //remove back arrow from list fragment
-    //
 
     override fun onCreate() {
         super.onCreate()

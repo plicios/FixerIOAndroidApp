@@ -20,20 +20,9 @@ class RateFragment : Fragment() {
         requireArguments().getParcelable<RateRow>("rate")!!
     }
 
-    private val date by lazy {
-        DateRow("19.07.2020") //TODO get as Argument
-//        requireArguments().getParcelable<DateRow>("date")!!
-    }
-
-    private val rateViewModel by viewModels<RateRowViewModel>(factoryProducer = {
+    private val viewModel by viewModels<RateRowViewModel>(factoryProducer = {
         RateRowViewModel.Factory(
             rate
-        )
-    })
-
-    private val dateViewModel by viewModels<DateRowViewModel>(factoryProducer = {
-        DateRowViewModel.Factory(
-            date
         )
     })
 
@@ -43,8 +32,7 @@ class RateFragment : Fragment() {
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentRateBinding>(inflater,
             R.layout.fragment_rate, container, false)
-        binding.rateViewModel = rateViewModel
-        binding.dateViewModel = dateViewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
