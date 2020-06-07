@@ -1,4 +1,4 @@
-package pl.pgorny.fixerioapidisplay.util
+package pl.pgorny.fixerioapidisplay.ui
 
 import pl.pgorny.fixerioapidisplay.data.model.Rate
 
@@ -8,3 +8,4 @@ class ShowRateDetails(val rate: Rate) : Event()
 class ShowError(val errorText: String) : Event()
 class Loading : Event()
 class FinishedLoading : Event()
+class NoMoreData : Event()

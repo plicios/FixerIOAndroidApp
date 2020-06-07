@@ -3,21 +3,21 @@ package pl.pgorny.fixerioapidisplay.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import pl.pgorny.fixerioapidisplay.R
 import pl.pgorny.fixerioapidisplay.data.model.Date
-import pl.pgorny.fixerioapidisplay.data.model.Rate
 import pl.pgorny.fixerioapidisplay.data.model.ListItem
+import pl.pgorny.fixerioapidisplay.data.model.Rate
 import pl.pgorny.fixerioapidisplay.databinding.ItemDateBinding
 import pl.pgorny.fixerioapidisplay.databinding.ItemRateBinding
 import pl.pgorny.fixerioapidisplay.ui.viewModel.DateViewModel
 import pl.pgorny.fixerioapidisplay.ui.viewModel.RateViewModel
-import pl.pgorny.fixerioapidisplay.util.Event
-import pl.pgorny.fixerioapidisplay.util.SingleLiveEvent
+import pl.pgorny.fixerioapidisplay.ui.Event
 
-class RatesAndDatesAdapter(private val eventLiveData: SingleLiveEvent<Event>) : PagedListAdapter<ListItem, RatesAndDatesAdapter.RowViewHolder>(ListItem.diffUtilCallback) {
+class RatesAndDatesAdapter(private val eventLiveData: MutableLiveData<Event>) : PagedListAdapter<ListItem, RatesAndDatesAdapter.RowViewHolder>(ListItem.diffUtilCallback) {
 
     enum class ViewType(val value: Int){
         Rate(1),

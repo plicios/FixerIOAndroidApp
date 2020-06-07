@@ -11,8 +11,7 @@ interface FixerIoApi {
     @GET("{date}")
     suspend fun getHistoricalDataForDate(
         @Path("date") date: String,
-        @Query("access_key") accessKey: String,
-        @Query("symbols") symbols: String = "USD,AUD,CAD,PLN,MXN,EUR,RUB"
+        @Query("access_key") accessKey: String
     ) : Response<FixerIoApiResponse>
 }
 

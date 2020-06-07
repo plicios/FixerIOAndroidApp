@@ -8,10 +8,9 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import pl.pgorny.fixerioapidisplay.data.model.ListItem
 import pl.pgorny.fixerioapidisplay.data.repository.RatesAndDatesDataSource
-import pl.pgorny.fixerioapidisplay.util.Event
-import pl.pgorny.fixerioapidisplay.util.SingleLiveEvent
+import pl.pgorny.fixerioapidisplay.ui.Event
 
-class RatesAndDatesListViewModel(apiKey: String, eventLiveData: SingleLiveEvent<Event>) : ViewModel() {
+class RatesAndDatesListViewModel(apiKey: String, eventLiveData: MutableLiveData<Event>) : ViewModel() {
     val progressBarVisible = MutableLiveData(false)
 
     private val config = PagedList.Config.Builder()
@@ -39,7 +38,7 @@ class RatesAndDatesListViewModel(apiKey: String, eventLiveData: SingleLiveEvent<
 
     class Factory(
         private val apiKey: String,
-        private val eventLiveData: SingleLiveEvent<Event>
+        private val eventLiveData: MutableLiveData<Event>
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return RatesAndDatesListViewModel(apiKey, eventLiveData) as T

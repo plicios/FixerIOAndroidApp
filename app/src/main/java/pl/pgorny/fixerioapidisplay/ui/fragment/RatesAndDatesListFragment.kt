@@ -9,17 +9,18 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import pl.pgorny.fixerioapidisplay.R
 import pl.pgorny.fixerioapidisplay.databinding.FragmentRatesAndDatesListBinding
+import pl.pgorny.fixerioapidisplay.ui.*
 import pl.pgorny.fixerioapidisplay.ui.adapters.RatesAndDatesAdapter
 import pl.pgorny.fixerioapidisplay.ui.viewModel.RatesAndDatesListViewModel
-import pl.pgorny.fixerioapidisplay.util.*
 
 class RatesAndDatesListFragment : Fragment() {
     private val eventLiveData =
-        SingleLiveEvent<Event>()
+        MutableLiveData<Event>()
 
     private val viewModel by viewModels<RatesAndDatesListViewModel>(factoryProducer = {
         RatesAndDatesListViewModel.Factory(
@@ -75,6 +76,17 @@ class RatesAndDatesListFragment : Fragment() {
                 viewModel.progressBarVisible.postValue(true)
             is FinishedLoading ->
                 viewModel.progressBarVisible.postValue(false)
+            is NoMoreData ->
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.no_more_data_dialog_title)
+                    .setMessage(R.string.no_more_data_dialog_message)
+                    .setNeutralButton(R.string.no_more_data_dialog_button_title) {
+                            dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+
         }
     }
 }

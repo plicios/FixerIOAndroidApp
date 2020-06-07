@@ -10,6 +10,10 @@
     <string name="error_dialog_title">Error</string>
     <string name="error_dialog_button_title">OK</string>
 
+    <string name="no_more_data_dialog_title">No more data</string>
+    <string name="no_more_data_dialog_message">You have reached the last available data</string>
+    <string name="no_more_data_dialog_button_title">OK</string>
+
     <string name="next_page_loading">Loading next page. Please wait…</string>
 
     <string name="flag">Currency country of origin flag</string>

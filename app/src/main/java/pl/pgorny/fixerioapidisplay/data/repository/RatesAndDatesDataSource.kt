@@ -1,5 +1,6 @@
 package pl.pgorny.fixerioapidisplay.data.repository
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.GlobalScope
@@ -12,14 +13,14 @@ import pl.pgorny.fixerioapidisplay.data.dto.FixerIoApiSuccessResponse
 import pl.pgorny.fixerioapidisplay.data.model.Date
 import pl.pgorny.fixerioapidisplay.data.model.Rate
 import pl.pgorny.fixerioapidisplay.data.model.ListItem
-import pl.pgorny.fixerioapidisplay.util.*
+import pl.pgorny.fixerioapidisplay.ui.*
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import kotlin.random.Random
 
-class RatesAndDatesDataSource(private val apiAccessKey: String, var eventLiveData: SingleLiveEvent<Event>) : PageKeyedDataSource<DateTime, ListItem>() {
+class RatesAndDatesDataSource(private val apiAccessKey: String, var eventLiveData: MutableLiveData<Event>, private val useMockInsteadOfApi: Boolean = false) : PageKeyedDataSource<DateTime, ListItem>() {
     private val fixerIoApi by lazy {
         Retrofit.Builder()
             .baseUrl("http://data.fixer.io/api/")
@@ -66,8 +67,11 @@ class RatesAndDatesDataSource(private val apiAccessKey: String, var eventLiveDat
         try {
             for (i in 0 until pageSize) {
                 nextKey?.let {
-//                    val response = fixerIoApi.getHistoricalDataForDate(it.toFixerIoDateQueryFormat(), apiAccessKey)
-                    val response = mock(it.toFixerIoDateQueryFormat())//TODO replace with call to server
+                    val response = if(useMockInsteadOfApi)
+                        mock(it.toFixerIoDateQueryFormat())
+                    else
+                        fixerIoApi.getHistoricalDataForDate(it.toFixerIoDateQueryFormat(), apiAccessKey)
+
                     if(response.isSuccessful){
                         val fixerIoResponse = response.body()?.getResponse() ?: throw Exception("Api returned empty body")
                         when(fixerIoResponse){
@@ -77,7 +81,17 @@ class RatesAndDatesDataSource(private val apiAccessKey: String, var eventLiveDat
                                 result.addAll(rows)
                             }
                             is FixerIoApiFailureResponse -> {
-                                throw Exception(fixerIoResponse.error.info)
+                                when(fixerIoResponse.error.code){
+                                    106 -> {
+                                        //No more data to fetch
+                                        nextKey = null
+                                        eventLiveData.postValue(NoMoreData())
+                                    }
+                                    else ->
+                                        throw Exception(fixerIoResponse.error.info)
+                                }
+
+
                             }
                             else -> throw IllegalStateException("Response must be success or failure")
                         }
@@ -124,7 +138,7 @@ class RatesAndDatesDataSource(private val apiAccessKey: String, var eventLiveDat
 
     class Factory(
         private val apiAccessKey: String,
-        private val eventLiveData: SingleLiveEvent<Event>
+        private val eventLiveData: MutableLiveData<Event>
     ) : DataSource.Factory<DateTime, ListItem>() {
         override fun create(): DataSource<DateTime, ListItem> {
             return RatesAndDatesDataSource(apiAccessKey, eventLiveData)
