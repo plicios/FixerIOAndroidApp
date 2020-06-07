@@ -3,23 +3,21 @@ package pl.pgorny.fixerioapidisplay.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import pl.pgorny.fixerioapidisplay.R
-import pl.pgorny.fixerioapidisplay.data.model.DateRow
-import pl.pgorny.fixerioapidisplay.data.model.RateRow
-import pl.pgorny.fixerioapidisplay.data.model.Row
-import pl.pgorny.fixerioapidisplay.databinding.ItemDateRowBinding
-import pl.pgorny.fixerioapidisplay.databinding.ItemRateRowBinding
-import pl.pgorny.fixerioapidisplay.ui.viewModel.DateRowViewModel
-import pl.pgorny.fixerioapidisplay.ui.viewModel.RateRowViewModel
+import pl.pgorny.fixerioapidisplay.data.model.Date
+import pl.pgorny.fixerioapidisplay.data.model.Rate
+import pl.pgorny.fixerioapidisplay.data.model.ListItem
+import pl.pgorny.fixerioapidisplay.databinding.ItemDateBinding
+import pl.pgorny.fixerioapidisplay.databinding.ItemRateBinding
+import pl.pgorny.fixerioapidisplay.ui.viewModel.DateViewModel
+import pl.pgorny.fixerioapidisplay.ui.viewModel.RateViewModel
 import pl.pgorny.fixerioapidisplay.util.Event
 import pl.pgorny.fixerioapidisplay.util.SingleLiveEvent
-import timber.log.Timber
 
-class RowAdapter(private val eventLiveData: SingleLiveEvent<Event>) : PagedListAdapter<Row, RowAdapter.RowViewHolder>(Row.diffUtilCallback) {
+class RatesAndDatesAdapter(private val eventLiveData: SingleLiveEvent<Event>) : PagedListAdapter<ListItem, RatesAndDatesAdapter.RowViewHolder>(ListItem.diffUtilCallback) {
 
     enum class ViewType(val value: Int){
         Rate(1),
@@ -28,34 +26,34 @@ class RowAdapter(private val eventLiveData: SingleLiveEvent<Event>) : PagedListA
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         when (viewType){
-            ViewType.Date.value -> DateRowViewHolder(DataBindingUtil.inflate(
+            ViewType.Date.value -> DateViewHolder(DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_date_row, parent, false
+                R.layout.item_date, parent, false
             ))
-            ViewType.Rate.value -> RateRowViewHolder(DataBindingUtil.inflate(
+            ViewType.Rate.value -> RateViewHolder(DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_rate_row, parent, false
+                R.layout.item_rate, parent, false
             ))
             else -> throw IllegalStateException("Unsupported view type")
         }
 
     override fun onBindViewHolder(holder: RowViewHolder, position: Int) {
         when(holder){
-            is RateRowViewHolder ->
-                holder.binding.viewModel = RateRowViewModel(getItem(position) as RateRow).also {
+            is RateViewHolder ->
+                holder.binding.viewModel = RateViewModel(getItem(position) as Rate).also {
                     it.eventLiveData = eventLiveData
                 }
-            is DateRowViewHolder ->
-                holder.binding.viewModel = DateRowViewModel(getItem(position) as DateRow)
+            is DateViewHolder ->
+                holder.binding.viewModel = DateViewModel(getItem(position) as Date)
             else -> throw IllegalStateException("Unsupported viewHolder type")
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when(getItem(position)){
-            is RateRow ->
+            is Rate ->
                 ViewType.Rate.value
-            is DateRow ->
+            is Date ->
                 ViewType.Date.value
             else -> throw IllegalStateException("Unsupported row type")
         }
@@ -63,6 +61,6 @@ class RowAdapter(private val eventLiveData: SingleLiveEvent<Event>) : PagedListA
 
     abstract class RowViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
 
-    class RateRowViewHolder(val binding: ItemRateRowBinding) : RowViewHolder(binding)
-    class DateRowViewHolder(val binding: ItemDateRowBinding) : RowViewHolder(binding)
+    class RateViewHolder(val binding: ItemRateBinding) : RowViewHolder(binding)
+    class DateViewHolder(val binding: ItemDateBinding) : RowViewHolder(binding)
 }

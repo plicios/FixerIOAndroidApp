@@ -5,21 +5,34 @@
     <data>
         <variable
             name="viewModel"
-            type="pl.pgorny.fixerioapidisplay.ui.viewModel.RateRowViewModel" />
+            type="pl.pgorny.fixerioapidisplay.ui.viewModel.RateViewModel" />
         <import type="android.view.View" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp"
-        tools:context=".ui.RateFragment">
+        tools:context=".ui.fragment.RateFragment">
+        <ImageView
+            android:id="@+id/item_rate_currency_flag"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="@string/flag"
+            flag="@{viewModel.currencyCode}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rate_fragment_date_label"
+            app:layout_constraintBottom_toBottomOf="@id/rate_fragment_rate_label"
+            tools:src="@drawable/ic_australia" />
+
+
         <TextView
             android:id="@+id/rate_fragment_date_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/date_label"
+            android:layout_marginStart="10dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/item_rate_currency_flag"/>
         <TextView
             android:id="@+id/rate_fragment_date"
             android:layout_width="0dp"
@@ -37,7 +50,7 @@
             android:text="@string/currency_code_label"
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/rate_fragment_date_label"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="@id/rate_fragment_date_label"/>
         <TextView
             android:id="@+id/rate_fragment_currency_code"
             android:layout_width="0dp"
@@ -51,19 +64,40 @@
             tools:text="AUD"/>
 
         <TextView
+            android:id="@+id/rate_fragment_currency_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/currency_name_label"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/rate_fragment_currency_code_label"
+            app:layout_constraintStart_toStartOf="@id/rate_fragment_date_label"/>
+
+        <TextView
+            android:id="@+id/rate_fragment_currency_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            currencyName="@{viewModel.currencyCode}"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rate_fragment_currency_name_label"
+            app:layout_constraintStart_toEndOf="@id/rate_fragment_currency_name_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Australian Dollar"/>
+
+
+        <TextView
             android:id="@+id/rate_fragment_rate_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/rate_label"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/rate_fragment_currency_code_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/rate_fragment_currency_name_label"
+            app:layout_constraintStart_toStartOf="@id/rate_fragment_date_label" />
 
         <TextView
             android:id="@+id/rate_fragment_rate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.rate}"
+            android:text="@{viewModel.rateValue}"
             android:layout_marginStart="10dp"
             app:layout_constraintBaseline_toBaselineOf="@+id/rate_fragment_rate_label"
             app:layout_constraintStart_toEndOf="@id/rate_fragment_rate_label"

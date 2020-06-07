@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
         setupActionBarWithNavController(
             navController,
             AppBarConfiguration
-                .Builder(R.id.rates_list_dest)
+                .Builder(R.id.rates_and_dates_list_dest)
                 .setFallbackOnNavigateUpListener(this)
                 .build()
         )

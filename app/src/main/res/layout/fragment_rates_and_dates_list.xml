@@ -5,13 +5,13 @@
     <data>
         <variable
             name="viewModel"
-            type="pl.pgorny.fixerioapidisplay.ui.viewModel.RowsListViewModel" />
+            type="pl.pgorny.fixerioapidisplay.ui.viewModel.RatesAndDatesListViewModel" />
         <import type="android.view.View" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.RowsListFragment">
+        tools:context=".ui.fragment.RatesAndDatesListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rows_list_fragment_rows_list"
@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_date_row"
+            tools:listitem="@layout/item_date"
             tools:itemCount="20"/>
 
         <LinearLayout
@@ -32,6 +32,7 @@
             android:orientation="vertical"
             android:background="@color/background_color"
             android:layout_marginBottom="20dp"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">

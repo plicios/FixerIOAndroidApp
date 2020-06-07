@@ -5,31 +5,29 @@
     <data>
         <variable
             name="viewModel"
-            type="pl.pgorny.fixerioapidisplay.ui.viewModel.RateRowViewModel" />
+            type="pl.pgorny.fixerioapidisplay.ui.viewModel.DateViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{view -> viewModel.openDetails()}"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="@color/colorAccent">
         <TextView
-            android:id="@+id/item_rate_currency_code"
+            android:id="@+id/item_exercise_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.currencyCode}"
-            android:layout_marginStart="20dp"
+            android:text="@string/date_label"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="AUD"/>
+            app:layout_constraintStart_toStartOf="parent" />
         <TextView
-            android:id="@+id/item_rate_rate"
+            android:id="@+id/item_exercise_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.rate}"
+            android:text="@{viewModel.date}"
             android:layout_marginStart="10dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/item_rate_currency_code"
-            app:layout_constraintStart_toEndOf="@id/item_rate_currency_code"
+            app:layout_constraintBaseline_toBaselineOf="@+id/item_exercise_name_label"
+            app:layout_constraintStart_toEndOf="@id/item_exercise_name_label"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="0.3682" />
+            tools:text="25.10.2010" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

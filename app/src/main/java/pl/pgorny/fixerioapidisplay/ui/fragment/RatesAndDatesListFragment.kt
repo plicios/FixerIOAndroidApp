@@ -1,4 +1,4 @@
-package pl.pgorny.fixerioapidisplay.ui
+package pl.pgorny.fixerioapidisplay.ui.fragment
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -12,18 +12,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import pl.pgorny.fixerioapidisplay.R
-import pl.pgorny.fixerioapidisplay.databinding.FragmentRowsListBinding
-import pl.pgorny.fixerioapidisplay.ui.adapters.RowAdapter
-import pl.pgorny.fixerioapidisplay.ui.viewModel.RowsListViewModel
+import pl.pgorny.fixerioapidisplay.databinding.FragmentRatesAndDatesListBinding
+import pl.pgorny.fixerioapidisplay.ui.adapters.RatesAndDatesAdapter
+import pl.pgorny.fixerioapidisplay.ui.viewModel.RatesAndDatesListViewModel
 import pl.pgorny.fixerioapidisplay.util.*
-import timber.log.Timber
 
-class RowsListFragment : Fragment() {
+class RatesAndDatesListFragment : Fragment() {
     private val eventLiveData =
         SingleLiveEvent<Event>()
 
-    private val viewModel by viewModels<RowsListViewModel>(factoryProducer = {
-        RowsListViewModel.Factory(
+    private val viewModel by viewModels<RatesAndDatesListViewModel>(factoryProducer = {
+        RatesAndDatesListViewModel.Factory(
             getString(R.string.api_access_key),
             eventLiveData
         )
@@ -33,16 +32,18 @@ class RowsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentRowsListBinding>(inflater,
-            R.layout.fragment_rows_list, container, false)
+        val binding: FragmentRatesAndDatesListBinding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_rates_and_dates_list, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.eventLiveData = eventLiveData
 
         eventLiveData.observe(viewLifecycleOwner) {
             handleEvent(it)
         }
 
-        val adapter = RowAdapter(eventLiveData)
+        val adapter = RatesAndDatesAdapter(eventLiveData)
         binding.rowsListFragmentRowsList.adapter = adapter
         viewModel.rows.observe(viewLifecycleOwner) {
             adapter.submitList(it)
@@ -52,14 +53,14 @@ class RowsListFragment : Fragment() {
 
     private fun handleEvent(event: Event){
         when(event){
-            is ShowRateDetailsEvent ->
+            is ShowRateDetails ->
                 findNavController().navigate(
                     R.id.action_rates_list_dest_to_rate_fragment_dest,
                     bundleOf(
                         "rate" to event.rate
                     )
                 )
-            is ShowApiErrorEvent ->
+            is ShowError ->
                 AlertDialog.Builder(requireContext())
                     .setTitle(R.string.error_dialog_title)
                     .setMessage(event.errorText)
@@ -70,9 +71,9 @@ class RowsListFragment : Fragment() {
                     }
                     .create()
                     .show()
-            is LoadingNextPage ->
+            is Loading ->
                 viewModel.progressBarVisible.postValue(true)
-            is FinishedLoadingNextPage ->
+            is FinishedLoading ->
                 viewModel.progressBarVisible.postValue(false)
         }
     }

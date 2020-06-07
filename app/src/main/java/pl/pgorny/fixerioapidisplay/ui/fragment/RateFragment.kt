@@ -1,4 +1,4 @@
-package pl.pgorny.fixerioapidisplay.ui
+package pl.pgorny.fixerioapidisplay.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,20 +8,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import pl.pgorny.fixerioapidisplay.R
-import pl.pgorny.fixerioapidisplay.data.model.DateRow
-import pl.pgorny.fixerioapidisplay.data.model.RateRow
+import pl.pgorny.fixerioapidisplay.data.model.Rate
 import pl.pgorny.fixerioapidisplay.databinding.FragmentRateBinding
-import pl.pgorny.fixerioapidisplay.ui.viewModel.DateRowViewModel
-import pl.pgorny.fixerioapidisplay.ui.viewModel.RateRowViewModel
+import pl.pgorny.fixerioapidisplay.ui.viewModel.RateViewModel
 
 class RateFragment : Fragment() {
 
     private val rate by lazy {
-        requireArguments().getParcelable<RateRow>("rate")!!
+        requireArguments().getParcelable<Rate>("rate")!!
     }
 
-    private val viewModel by viewModels<RateRowViewModel>(factoryProducer = {
-        RateRowViewModel.Factory(
+    private val viewModel by viewModels<RateViewModel>(factoryProducer = {
+        RateViewModel.Factory(
             rate
         )
     })

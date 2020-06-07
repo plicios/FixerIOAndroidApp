@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class RateRow(val date: String, val currencyCode: String, val rate: Double) : Row(), Parcelable
+data class Date(val date: String) : ListItem(), Parcelable

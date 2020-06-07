@@ -1,0 +1,76 @@
+package pl.pgorny.fixerioapidisplay.data
+
+import pl.pgorny.fixerioapidisplay.R
+
+object CurrencyMapper {
+    val names = mapOf(
+        "AUD" to "Australian Dollar",
+        "BGN" to "Bulgarian Lev",
+        "BRL" to "Brazilian Real",
+        "CAD" to "Canadian Dollar",
+        "CHF" to "Swiss Franc",
+        "CNY" to "Renminbi",
+        "CZK" to "Czech Koruna",
+        "DKK" to "Danish Krone",
+        "EUR" to "Euro",
+        "GBP" to "Pound Sterling",
+        "HKD" to "Hong Kong Dollar",
+        "HRK" to "Croatian Kuna",
+        "HUF" to "Hungarian Forint",
+        "IDR" to "Indonesian Rupiah",
+        "ILS" to "Israeli Shekel",
+        "INR" to "Indian Rupee",
+        "ISK" to "Icelandic Króna",
+        "JPY" to "Japanese Yen",
+        "KRW" to "South Korean Won",
+        "MXN" to "Mexican Peso",
+        "MYR" to "Malaysian Ringgit",
+        "NOK" to "Norwegian Krone",
+        "NZD" to "New Zealand Dollar",
+        "PHP" to "Philippine Peso",
+        "PLN" to "Polish Złoty",
+        "RON" to "Romanian Leu",
+        "RUB" to "Russian Rouble",
+        "SEK" to "Swedish Krona",
+        "SGD" to "Singapore Dollar",
+        "THB" to "Thai Baht",
+        "USD" to "US Dollar",
+        "ZAR" to "South African Rand"
+    )
+
+//    Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    val flags = mapOf(
+        "AUD" to R.drawable.ic_australia,
+        "BGN" to R.drawable.ic_bulgaria,
+        "BRL" to R.drawable.ic_brazil,
+        "CAD" to R.drawable.ic_canada,
+        "CHF" to R.drawable.ic_switzerland,
+        "CNY" to R.drawable.ic_china,
+        "CZK" to R.drawable.ic_czech,
+        "DKK" to R.drawable.ic_denmark,
+        "EUR" to R.drawable.ic_eu,
+        "GBP" to R.drawable.ic_uk,
+        "HKD" to R.drawable.ic_hong_kong,
+        "HRK" to R.drawable.ic_croatia,
+        "HUF" to R.drawable.ic_hungary,
+        "IDR" to R.drawable.ic_indonesia,
+        "ILS" to R.drawable.ic_israel,
+        "INR" to R.drawable.ic_india,
+        "ISK" to R.drawable.ic_iceland,
+        "JPY" to R.drawable.ic_japan,
+        "KRW" to R.drawable.ic_south_korea,
+        "MXN" to R.drawable.ic_mexico,
+        "MYR" to R.drawable.ic_malaysia,
+        "NOK" to R.drawable.ic_norway,
+        "NZD" to R.drawable.ic_new_zealand,
+        "PHP" to R.drawable.ic_philippines,
+        "PLN" to R.drawable.ic_poland,
+        "RON" to R.drawable.ic_romania,
+        "RUB" to R.drawable.ic_russia,
+        "SEK" to R.drawable.ic_sweden,
+        "SGD" to R.drawable.ic_singapore,
+        "THB" to R.drawable.ic_thailand,
+        "USD" to R.drawable.ic_usa,
+        "ZAR" to R.drawable.ic_south_africa
+    )
+}
